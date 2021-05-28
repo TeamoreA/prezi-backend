@@ -1,3 +1,21 @@
-from django.shortcuts import render
+from re import search
+from django.db import models
+from rest_framework.generics import ListAPIView, ListCreateAPIView
+from .serializers import PreziSerializer
+from .models import Prezi
 
-# Create your views here.
+
+
+class ListPrezis(ListAPIView):
+    serializer_class = PreziSerializer
+    def get_queryset(self):
+        search_value = self.request.query_params.get('search_value')
+        ascending = self.request.query_params.get('ascending')
+        if search_value:
+            queryset = Prezi.objects.filter(title__icontains=search_value)
+        else:
+            queryset = Prezi.objects.all()
+        if ascending == 'false':
+            return queryset.order_by('-created_at')
+        return queryset
+
