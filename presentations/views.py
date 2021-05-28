@@ -1,6 +1,4 @@
-from re import search
-from django.db import models
-from rest_framework.generics import ListAPIView, ListCreateAPIView
+from rest_framework.generics import ListAPIView
 from .serializers import PreziSerializer
 from .models import Prezi
 
